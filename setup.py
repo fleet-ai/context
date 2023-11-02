@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="context",
-    version="0.1",
+    name="fleet-context",
+    version="1.0.0",
     description="A chat interface over up-to-date Python library documentation.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -13,13 +13,24 @@ setup(
     install_requires=["openai", "rich>=13.0.0", "tiktoken>=0.1.1"],
     entry_points={
         "console_scripts": [
-            "context = cli:main",
+            "context = main",
         ],
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3 :: Only",
     ],
+    keywords="libraries, embeddings, ai",
     python_requires=">=3.9",
+    project_urls={  # Optional
+        "Homepage": "https://fleet.so",
+        "Source": "https://github.com/fleet-ai/context",
+    },
 )

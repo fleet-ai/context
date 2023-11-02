@@ -138,3 +138,6 @@ figures/
 
 # wandb
 wandb/
+
+# PyPI
+.pypirc
