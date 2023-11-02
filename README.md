@@ -51,6 +51,7 @@ context -m gpt-3.5-turbo
 You can control the number of retrieved chunks by using `-k` or `--k_value` (defaulted to 10), and you can toggle whether the model cites its source by using `-c` or `--cite_sources` (defaults to true).
 ```shell
 context -k 15 -c false
+```
 
 
 
@@ -79,6 +80,3 @@ The drastic jump makes sense, given the entire Langchain documentation was built
 We saw a 34-point improvement for gpt-3.5 and a 38-point improvement for gpt-4. This is because Pydantic v1 was launched before gpt-4's knowledge cutoff, but Pydantic v2 was launched in 2022. The improvement was not as sharp, but it was still significant.
 
 <img width="50%" src="https://github.com/fleet-ai/context/assets/44193474/f634bda4-1611-499f-895a-d407cf4774a6"/>
-
-
-```
