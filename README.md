@@ -83,5 +83,5 @@ The drastic jump makes sense, given the entire Langchain documentation was built
 
 We saw a 34-point improvement for gpt-3.5 and a 38-point improvement for gpt-4. This is because Pydantic v1 was launched before gpt-4's knowledge cutoff, but Pydantic v2 was launched in 2022. The improvement was not as sharp, but it was still significant.
 
-<img width="50%" src="https://github.com/fleet-ai/data/assets/44193474/d46e3b81-b806-451f-93fa-e65b20e9b1a7"/>
+<img width="50%" src="https://github.com/fleet-ai/context/assets/44193474/f634bda4-1611-499f-895a-d407cf4774a6"/>
 
