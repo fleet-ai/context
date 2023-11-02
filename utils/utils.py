@@ -1,0 +1,42 @@
+import re
+import traceback
+
+from rich import print as rprint
+from rich.console import Console
+from rich.markdown import Markdown
+from rich.text import Text
+from rich.rule import Rule
+
+
+console = Console()
+
+
+def print_markdown(message):
+    for line in message.split("\n"):
+        line = line.strip()
+        if line == "":
+            print("")
+        elif line == "---":
+            rprint(Rule(style="white"))
+        elif line.startswith("!!!"):
+            rprint(Text(line[3:], style="#D5D7FB"))
+        else:
+            rprint(Markdown(line))
+
+    if "\n" not in message and message.startswith(">"):
+        print("")
+
+
+def print_exception(exc_type, exc_value, traceback_obj):
+    traceback_details = traceback.extract_tb(traceback_obj)
+    for filename, lineno, funcname, text in traceback_details:
+        console.print(
+            f"File: {filename}, Line: {lineno}, Func: {funcname}, Text: {text}"
+        )
+    console.print(f"{exc_type.__name__}: {exc_value}")
+
+
+def extract_code_blocks(message):
+    pattern = r"```python\n(.*?)```"
+    matches = re.findall(pattern, message, re.DOTALL)
+    return "\n".join(matches)
