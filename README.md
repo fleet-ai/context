@@ -52,36 +52,3 @@ You can control the number of retrieved chunks by using `-k` or `--k_value` (def
 ```shell
 context -k 15 -c false
 ```
-
-<br><br><br>
-
-## Evaluations & benchmarks
-
-### Methodology
-
-We ran a hybrid human-AI evaluation pipeline to get the both of both worlds: the efficiency and bias-free strengths of language models and the accuracy of human-based evaluations. We also heavily penalize inaccuracy, much more so than what a boilerplate gpt-4 evaluations pipeline would.
-
-We synthetically generated a list of 50 question-answer pairs for 50 randomly sampled chunks, then 50 question-answer pairs for Langchain and Pydantic.
-
-<br>
-
-### Results
-
-#### Sampled libraries
-
-WIP
-
-#### Langchain
-
-We saw a 48-point improvement for gpt-3.5 and a 58-point improvement for gpt-4. We hypothesize that the reason the "before" score for gpt-4 is lower is because it's better at mentioning what it doesn't know.
-
-The drastic jump makes sense, given the entire Langchain documentation was built after gpt-4's knowledge cutoff.
-
-<img width="50%" src="https://github.com/fleet-ai/data/assets/44193474/ac60939d-640e-42f6-94a2-02313874f5de"/>
-
-#### Pydantic
-
-We saw a 34-point improvement for gpt-3.5 and a 38-point improvement for gpt-4. This is because Pydantic v1 was launched before gpt-4's knowledge cutoff, but Pydantic v2 was launched in 2022. The improvement was not as sharp, but it was still significant.
-
-<img width="50%" src="https://github.com/fleet-ai/context/assets/44193474/f634bda4-1611-499f-895a-d407cf4774a6"/>
-
