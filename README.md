@@ -20,7 +20,7 @@
 Install the package and run `context` to ask questions about the most up-to-date Python libraries. You will have to provide your OpenAI key to start a session.
 
 ```shell
-pip install fleet-libraries
+pip install fleet-context
 ```
 ```shell
 context
