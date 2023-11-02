@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="context",
     version="0.1",
-    description="Access up-to-date information about the most important Python libraries in the world.",
+    description="A chat interface over up-to-date Python library documentation.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="Fleet AI",
@@ -21,5 +21,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.9",
 )
