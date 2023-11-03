@@ -4,9 +4,12 @@
     <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white&style=flat" alt="License"/>
     <br>
     <br>
-    <b>Code generation with up-to-date Python libraries.</b>
+    <b>A CLI tool over the top 1200 Python libraries.</b>
     <br>
-    <br><a href="https://alpha.usefleet.ai">WIP View the site</a>‎ ‎ |‎ ‎ <a href="https://alpha.usefleet.ai/">WIP API waitlist</a>
+    <span>Used for library q/a & code generation</span>
+    <br>
+    <br>
+    <a href="https://alpha.usefleet.ai/context">View the site</a>‎
     <br>
 </p>
 
