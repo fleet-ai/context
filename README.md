@@ -9,11 +9,13 @@
     <span>Used for library q/a & code generation</span>
     <br>
     <br>
-    <a href="https://alpha.usefleet.ai/context">View the site</a>‎
+    <a href="https://alpha.usefleet.ai/context">View the site</a>     |     <a href="https://atlas.nomic.ai/map/ab7a1860-a8ed-4c71-a181-3fa8bc4ad1ce/03b0f694-13bf-464c-9b85-abb6e4286770">View the data visualizer</a>‎
+    <br>
+    <br>
     <br>
 </p>
 
-![Screenshot 2023-11-01 at 1 02 26 AM](https://github.com/fleet-ai/data/assets/44193474/3229b87c-74bc-46ab-afc2-bb0bc598a6d0)
+<img width="100%" alt="Nomic Visualizer" src="https://github.com/fleet-ai/context/assets/44193474/03bb1133-8818-4f27-81c0-b60b354d6af3">
 
 
 <br><br><br>
