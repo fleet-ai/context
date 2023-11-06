@@ -4,14 +4,15 @@
     <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white&style=flat" alt="License"/>
     <br>
     <br>
-    <b>Code generation with up-to-date Python libraries.</b>
+    <b>CLI over the top 1,200 Python libraries</b>
+    <br>
+    Ask questions & generate/run code, all in your command line with gpt-4-turbo
     <br>
     <br><a href="https://alpha.usefleet.ai">WIP View the site</a>‎ ‎ |‎ ‎ <a href="https://alpha.usefleet.ai/">WIP API waitlist</a>
     <br>
 </p>
 
 ![Screenshot 2023-11-01 at 1 02 26 AM](https://github.com/fleet-ai/data/assets/44193474/3229b87c-74bc-46ab-afc2-bb0bc598a6d0)
-
 
 <br><br><br>
 
@@ -21,8 +22,13 @@ Install the package and run `context` to ask questions about the most up-to-date
 
 ```shell
 pip install fleet-context
+context
 ```
+
+If you'd like to run the CLI tool locally, you can clone this repository, cd into it, then run:
+
 ```shell
+pip install -e .
 context
 ```
 
@@ -31,6 +37,7 @@ context
 ### Limit libraries
 
 You can use the `-l` or `--libraries` followed by a list of libraries to limit your session to a certain number of libraries. Defaults to all.
+
 ```shell
 context -l langchain pydantic openai
 ```
@@ -39,7 +46,8 @@ context -l langchain pydantic openai
 
 ### Use a different OpenAI model
 
-You can select a different OpenAI model by using `-m` or `--model`. Defaults to `gpt-4`. You can set your model to `gpt-4-32k` (if your organization has access), `gpt-3.5-turbo`, or `gpt-3.5-turbo-16k`.
+You can select a different OpenAI model by using `-m` or `--model`. Defaults to `gpt-4-1106-preview` (gpt-4-turbo). You can set your model to `gpt-4` if you want more stable gpt-4 results, `gpt-3.5-turbo`, or `gpt-3.5-turbo-16k`.
+
 ```shell
 context -m gpt-3.5-turbo
 ```
@@ -49,12 +57,10 @@ context -m gpt-3.5-turbo
 ### Advanced settings
 
 You can control the number of retrieved chunks by using `-k` or `--k_value` (defaulted to 10), and you can toggle whether the model cites its source by using `-c` or `--cite_sources` (defaults to true).
+
 ```shell
 context -k 15 -c false
 ```
-
-
-
 
 ## Evaluations
 
@@ -65,7 +71,6 @@ context -k 15 -c false
 We saw a 37-point improvement for gpt-4 generation scores across the board. We attribute this to a lack of knowledge for the most up-to-date versions of libraries.
 
 <img width="50%" src="https://github.com/fleet-ai/context/assets/44193474/2d5c6f70-b5f8-4554-8999-4145ebbd32d7">
-
 
 #### Langchain
 

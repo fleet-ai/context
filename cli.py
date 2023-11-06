@@ -6,6 +6,7 @@ import os
 import openai
 import sys
 import argparse
+from getpass import getpass
 
 from rich import print as rprint
 
@@ -86,7 +87,7 @@ def main():
         ---
         """
         )
-        api_key = input("OpenAI API key: ")
+        api_key = getpass("OpenAI API key: ")
         openai.api_key = api_key
 
         print_markdown(
