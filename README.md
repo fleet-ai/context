@@ -6,7 +6,7 @@
     <br>
     <b>A CLI tool over the top 1200 Python libraries.</b>
     <br>
-    <span>Used for library q/a & code generation with gpt-4-turbo</span>
+    <span>Used for library q/a & code generation with all avaliable OpenAI models</span>
     <br>
     <br>
     <a href="https://alpha.usefleet.ai/context">Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://atlas.nomic.ai/map/ab7a1860-a8ed-4c71-a181-3fa8bc4ad1ce/03b0f694-13bf-464c-9b85-abb6e4286770">Data visualizer</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pypi.org/project/fleet-context/1.0.7/">PyPI</a>‎
@@ -49,7 +49,7 @@ context -l langchain pydantic openai
 
 ### Use a different OpenAI model
 
-You can select a different OpenAI model by using `-m` or `--model`. Defaults to `gpt-4-1106-preview` (gpt-4-turbo). You can set your model to `gpt-4` if you want more stable gpt-4 results, `gpt-3.5-turbo`, or `gpt-3.5-turbo-16k`.
+You can select a different OpenAI model by using `-m` or `--model`. Defaults to `gpt-4`. You can set your model to `gpt-4-1106-preview` (gpt-4-turbo), `gpt-3.5-turbo`, or `gpt-3.5-turbo-16k`.
 
 ```shell
 context -m gpt-3.5-turbo

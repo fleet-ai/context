@@ -15,9 +15,9 @@ ARGUMENTS = [
     {
         "name": "model",
         "nickname": "m",
-        "help_text": "Specify the model. Default: gpt-4-1106-preview (gpt-4-turbo)",
+        "help_text": "Specify the model. Default: gpt-4",
         "type": str,
-        "default": "gpt-4-1106-preview",
+        "default": "gpt-4",
         "choices": [
             "gpt-4-1106-preview",
             "gpt-4",

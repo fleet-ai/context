@@ -131,6 +131,8 @@ def main():
                 rprint("Exiting. Goodbye!")
                 break
 
+            query = "what are the steps in creating and running an openai code interpreter assistant using the Python openai client? to create an assistant, you MUST USE openai.beta.assistants.create(), and for threads, you MUST USE openai.beta.threads.create() then openai.beta.threads.messages.create() then openai.beta.threads.run.create(). generally speaking, you NEED TO USE openai.beta to get the right results."
+            k = 15
             messages.append({"role": "user", "content": query})
             rag_context = retrieve_context(query, k=k, filters=filters)
             prompts = construct_prompt(
