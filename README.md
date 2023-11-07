@@ -58,10 +58,10 @@ context -m gpt-3.5-turbo
 
 ### Advanced settings
 
-You can control the number of retrieved chunks by using `-k` or `--k_value` (defaulted to 25), and you can toggle whether the model cites its source by using `-c` or `--cite_sources` (defaults to true).
+You can control the number of retrieved chunks by using `-k` or `--k_value` (defaulted to 15), and you can toggle whether the model cites its source by using `-c` or `--cite_sources` (defaults to true).
 
 ```shell
-context -k 10 -c false
+context -k 25 -c false
 ```
 
 <br><br><br>

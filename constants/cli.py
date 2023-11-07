@@ -4,7 +4,7 @@ ARGUMENTS = [
         "nickname": "k",
         "help_text": "Number of chunks to return",
         "type": int,
-        "default": 25,
+        "default": 15,
     },
     {
         "name": "libraries",
