@@ -34,7 +34,9 @@ def retrieve_context(query, k=10, filters=None):
     return {"role": "user", "content": prompt_with_context}
 
 
-def construct_prompt(messages, context_message, model="gpt-4", cite_sources=True):
+def construct_prompt(
+    messages, context_message, model="gpt-4-1106-preview", cite_sources=True
+):
     """
     Constructs a RAG (Retrieval-Augmented Generation) prompt by balancing the token count of messages and context_message.
     If the total token count exceeds the maximum limit, it adjusts the token count of each to maintain a 1:1 proportion.
@@ -43,7 +45,7 @@ def construct_prompt(messages, context_message, model="gpt-4", cite_sources=True
     Parameters:
     messages (List[dict]): List of messages to be included in the prompt.
     context_message (dict): Context message to be included in the prompt.
-    model (str): The model to be used for encoding, default is "gpt-4".
+    model (str): The model to be used for encoding, default is "gpt-4-1106-preview".
 
     Returns:
     List[dict]: The constructed RAG prompt.
@@ -109,8 +111,7 @@ def construct_prompt(messages, context_message, model="gpt-4", cite_sources=True
                         "content": encoding.decode(
                             removed_encoding[
                                 : min(
-                                    int(max_messages_count -
-                                        messages_token_count),
+                                    int(max_messages_count - messages_token_count),
                                     len(removed_encoding),
                                 )
                             ]
@@ -128,8 +129,7 @@ def construct_prompt(messages, context_message, model="gpt-4", cite_sources=True
     if context_token_count > max_context_count:
         # Taking a proportion of the content chars length
         reduced_chars_length = int(
-            len(context_message["content"]) *
-            (max_context_count / context_token_count)
+            len(context_message["content"]) * (max_context_count / context_token_count)
         )
         context_message["content"] = context_message["content"][:reduced_chars_length]
 
@@ -139,13 +139,13 @@ def construct_prompt(messages, context_message, model="gpt-4", cite_sources=True
     return messages
 
 
-def get_openai_chat_response(messages, model="gpt-4"):
+def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
     """
     Returns a streamed OpenAI chat response.
 
     Parameters:
     messages (List[dict]): List of messages to be included in the prompt.
-    model (str): The model to be used for encoding, default is "gpt-4".
+    model (str): The model to be used for encoding, default is "gpt-4-1106-preview".
 
     Returns:
     str: The streamed OpenAI chat response.

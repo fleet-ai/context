@@ -101,10 +101,22 @@ def main():
     else:
         openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-    print_markdown(
-        """!!!Welcome to Fleet Context!
-    Generate and run code using the most up-to-date libraries."""
-    )
+    if model == "gpt-4-1106-preview":
+        print_markdown(
+            """!!!Welcome to Fleet Context!
+        Generate and run code using the most up-to-date libraries.
+        
+        *Warning*: You are using gpt-4-turbo, which is not yet stable and rate limited at 100 requests per day. Please use with caution.
+        
+        """
+        )
+    else:
+        print_markdown(
+            """!!!Welcome to Fleet Context!
+        Generate and run code using the most up-to-date libraries.
+        
+        """
+        )
 
     messages = []
     while True:
