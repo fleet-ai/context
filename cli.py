@@ -10,7 +10,7 @@ from getpass import getpass
 
 from rich import print as rprint
 
-from utils.utils import print_markdown, print_exception, extract_code_blocks
+from utils.utils import print_markdown, print_exception, extract_code_blocks, print_help
 from utils.stream import TextStream
 from utils.ai import retrieve_context, construct_prompt, get_openai_chat_response
 
@@ -18,7 +18,8 @@ from constants.cli import ARGUMENTS, LIBRARIES
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Fleet Data Retriever")
+    parser = argparse.ArgumentParser(description="Fleet Data Retriever", add_help=False)
+    parser.add_argument("help", nargs="?", default=argparse.SUPPRESS)
 
     # Add arguments
     for arg in ARGUMENTS:
@@ -67,6 +68,10 @@ def main():
     cite_sources = args.cite_sources
     filters = {}
 
+    if getattr(args, "help", None) is not None:
+        print_help()
+        return
+
     # If library specified, match library name to uuid
     if args.libraries:
         for library in args.libraries:
@@ -106,7 +111,7 @@ def main():
             """!!!Welcome to Fleet Context!
         Generate and run code using the most up-to-date libraries.
         
-        *Warning*: You are using gpt-4-turbo, which is not yet stable and rate limited at 100 requests per day. Please use with caution.
+        *Warning*: You are using gpt-4-turbo, which is not yet stable and is rate limited at 100 requests per day. Please use with caution.
         
         """
         )

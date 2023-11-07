@@ -1,4 +1,4 @@
-API_URL = "http://localhost:8000"
+API_URL = "https://foundation.usefleet.ai"
 
 MODELS_TO_TOKENS = {
     "gpt-4": 8192,
