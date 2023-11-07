@@ -51,7 +51,7 @@ context -l langchain pydantic openai
 You can select a different OpenAI model by using `-m` or `--model`. Defaults to `gpt-4`. You can set your model to `gpt-4-1106-preview` (gpt-4-turbo), `gpt-3.5-turbo`, or `gpt-3.5-turbo-16k`.
 
 ```shell
-context -m gpt-3.5-turbo
+context -m gpt-4-1106-preview
 ```
 
 <br>
