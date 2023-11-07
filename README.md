@@ -9,7 +9,7 @@
     <span>Used for library q/a & code generation with gpt-4-turbo</span>
     <br>
     <br>
-    <a href="https://alpha.usefleet.ai/context">View the site</a>     |     <a href="https://atlas.nomic.ai/map/ab7a1860-a8ed-4c71-a181-3fa8bc4ad1ce/03b0f694-13bf-464c-9b85-abb6e4286770">View the data visualizer</a>‎
+    <a href="https://alpha.usefleet.ai/context">Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://atlas.nomic.ai/map/ab7a1860-a8ed-4c71-a181-3fa8bc4ad1ce/03b0f694-13bf-464c-9b85-abb6e4286770">Data visualizer</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pypi.org/project/fleet-context/1.0.7/">PyPI</a>‎
     <br>
     <br>
     <br>
