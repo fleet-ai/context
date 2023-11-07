@@ -15,7 +15,7 @@
     <br>
 </p>
 
-<img width="100%" alt="Nomic Visualizer" src="https://github.com/fleet-ai/context/assets/44193474/03bb1133-8818-4f27-81c0-b60b354d6af3">
+<img width="100%" alt="Screenshot 2023-11-06 at 10 01 22 PM" src="https://github.com/fleet-ai/context/assets/44193474/c7aeca8a-5a62-4655-a2c6-4d16846b330d">
 
 <br><br><br>
 
@@ -65,6 +65,8 @@ You can control the number of retrieved chunks by using `-k` or `--k_value` (def
 context -k 15 -c false
 ```
 
+<br><br><br>
+
 ## Evaluations
 
 ### Results
@@ -75,4 +77,4 @@ We saw a 37-point improvement for `gpt-4` generation scores and a 34-point impro
 
 We attribute this to a lack of knowledge for the most up-to-date versions of libraries for `gpt-4`, and a combination of relevant up-to-date information to generate with and relevance of information for `gpt-4-turbo`.
 
-<img width="50%" src="https://github.com/fleet-ai/context/assets/44193474/28838fb3-a077-4a85-8a43-521a3ab476ff">
+<img width="50%" src="https://github.com/fleet-ai/context/assets/44193474/1ee13497-adbe-4f80-8782-3d4172a7d956">
