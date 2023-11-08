@@ -151,7 +151,7 @@ def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
     str: The streamed OpenAI chat response.
     """
     try:
-        response = openai.ChatCompletion.create(
+        response = createCompletion(
             model=model, messages=messages, temperature=0.2, stream=True
         )
 
@@ -166,3 +166,25 @@ def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
     except Exception as error:
         print("Streaming Error:", error)
         raise Exception("Internal Server Error")
+
+def createCompletion(
+    model,
+    **kwargs
+):
+    if "/" in model:
+        if not os.environ.get('OPENROUTER_API_KEY'):
+            raise Exception(f"For non-OpenAI models, like {model}, set your OPENROUTER_API_KEY.")
+        return openai.ChatCompletion.create(
+            api_base="https://openrouter.ai/api/v1",
+            headers={
+                "HTTP-Referer": os.environ.get('OPENROUTER_APP_URL', "https://fleet.so/context"),
+                "X-Title": os.environ.get('OPENROUTER_APP_TITLE', "Fleet Context")
+            },
+            model=model,
+            **kwargs
+        )
+    else:
+        return openai.Completion.create(
+            model=model,
+            **kwargs
+        )

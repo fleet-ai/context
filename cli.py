@@ -83,16 +83,17 @@ def main():
         filters["library_name"] = args.libraries
 
     # Get the OpenAI API key, if not found
-    if not os.environ.get("OPENAI_API_KEY"):
+    api_key = os.environ.get("OPENAI_API_KEY") or os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
         print_markdown(
             """---
-        !!!**OpenAI API key not found.**
+        !!!**OpenAI/OpenRouter API key not found.**
 
         Please provide a key to proceed.
         ---
         """
         )
-        api_key = getpass("OpenAI API key: ")
+        api_key = getpass("API key: ")
         openai.api_key = api_key
 
         print_markdown(
@@ -100,11 +101,13 @@ def main():
         ---
 
         **Tip**: To save this key for later, run `export OPENAI_API_KEY=<your key>` on mac/linux or `setx OPENAI_API_KEY <your key>` on windows.
+        
+        For non-OpenAI models, you should set `OPENROUTER_API_KEY`, and optionally `OPENROUTER_APP_URL` and `OPENROUTER_APP_TITLE`.
 
         ---"""
         )
     else:
-        openai.api_key = os.environ.get("OPENAI_API_KEY")
+        openai.api_key = api_key
 
     if model == "gpt-4-1106-preview":
         print_markdown(
