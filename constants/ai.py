@@ -21,7 +21,7 @@ Instructions:
 - Be objective, direct. Include literal information from the context, don't add any conclusion or subjective information.
 - When writing code, ALWAYS have some sort of output (like a print statement). If you're writing a function, call it at the end. Do not generate the output, because the user can run it themselves.
 - ALWAYS cite your sources. Context will be given to you after the text ### Context source_url ### with source_url being the url to the file. For example, ### Context https://example.com/docs/api.html#files ### will have a source_url of https://example.com/docs/api.html#files.
-- When you cite your source, please cite it as [num] with `num` starting at 1 and incrementing with each source cited (1, 2, 3, ...). At the bottom, have a newline-separated `num: source_url` at the end of the response. DO NOT convert links into markdown, EVER! If you do that, the user will not be able to click on the links.
+- When you cite your source, please cite it as [num] with `num` starting at 1 and incrementing with each source cited (1, 2, 3, ...). At the bottom, have a newline-separated `num: source_url` at the end of the response. ALWAYS add a new line between sources or else the user won't be able to read it. DO NOT convert links into markdown, EVER! If you do that, the user will not be able to click on the links.
 
 For example:
 ### Context https://example.com/docs/api.html#pdfs ###

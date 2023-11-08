@@ -159,6 +159,10 @@ def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
             current_context = chunk["choices"][0]["delta"].get("content", "")
             yield current_context
 
+    except openai.error.AuthenticationError as error:
+        print("401 Authentication Error:", error)
+        raise Exception("Invalid OPENAI_API_KEY. Please re-run with a valid key.")
+
     except Exception as error:
         print("Streaming Error:", error)
-        raise Exception(status_code=500, detail="Internal Server Error")
+        raise Exception("Internal Server Error")
