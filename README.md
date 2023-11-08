@@ -2,6 +2,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white&style=flat" alt="License"/>
+    <img src="https://img.shields.io/discord/1107887761412870154?logo=discord&style=flat&logoColor=white" alt="Discord"/>
     <br>
     <br>
     <b>A CLI tool over the top 1200 Python libraries.</b>
@@ -9,7 +10,13 @@
     <span>Used for library q/a & code generation with all avaliable OpenAI models</span>
     <br>
     <br>
-    <a href="https://alpha.usefleet.ai/context">Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://atlas.nomic.ai/map/67dc2d8f-5161-46fe-9d73-5fda6f3f5cde/758aa80f-8f11-4f8f-b008-f402e61c48d4?xs=-41.15425&xf=41.09514&ys=-30.76443&yf=32.33730">Data Visualizer</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pypi.org/project/fleet-context/1.0.7/">PyPI</a>‎
+    <a href="https://alpha.usefleet.ai/context">Website</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://atlas.nomic.ai/map/67dc2d8f-5161-46fe-9d73-5fda6f3f5cde/758aa80f-8f11-4f8f-b008-f402e61c48d4?xs=-41.15425&xf=41.09514&ys=-30.76443&yf=32.33730">Data Visualizer</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://pypi.org/project/fleet-context/">PyPI</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://x.com/fleet_ai">@fleet_ai</a>‎
     <br>
     <br>
     <br>
@@ -51,7 +58,7 @@ context -l langchain pydantic openai
 You can select a different OpenAI model by using `-m` or `--model`. Defaults to `gpt-4`. You can set your model to `gpt-4-1106-preview` (gpt-4-turbo), `gpt-3.5-turbo`, or `gpt-3.5-turbo-16k`.
 
 ```shell
-context -m gpt-3.5-turbo
+context -m gpt-4-1106-preview
 ```
 
 <br>
