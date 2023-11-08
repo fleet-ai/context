@@ -156,7 +156,6 @@ def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
         )
 
         for chunk in response:
-            print(chunk.choices[0].delta)
             current_context = chunk.choices[0].delta.content
             yield current_context
 
