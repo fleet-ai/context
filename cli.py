@@ -127,6 +127,11 @@ def main():
     while True:
         try:
             query = input("> ")
+            query = query.strip()
+
+            if not query:
+                continue
+
             if query.lower() == "exit":
                 rprint("Exiting. Goodbye!")
                 break
