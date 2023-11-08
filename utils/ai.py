@@ -151,11 +151,17 @@ def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
     str: The streamed OpenAI chat response.
     """
     try:
+        print("=== start here ===")
+        print("model:", model)
+        print("messages:", messages)
+
         response = openai.chat.completions.create(
             model=model, messages=messages, temperature=0.2, stream=True
         )
+        print("response:", response)
 
         for chunk in response:
+            print("chunk:", chunk)
             current_context = chunk.choices[0].delta.content
             yield current_context
 
