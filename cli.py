@@ -145,8 +145,9 @@ def main():
             try:
                 streamer = TextStream()
                 for response in get_openai_chat_response(prompts, model=model):
-                    full_response += response
-                    streamer.print_stream(full_response)
+                    if response:
+                        full_response += response
+                        streamer.print_stream(full_response)
             finally:
                 streamer.end_stream()
                 rprint("\n")
