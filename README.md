@@ -50,7 +50,7 @@ fleet-context
 
 ### Limit libraries
 
-You can use the `-l` or `--libraries` followed by a list of libraries to limit your session to a certain number of libraries. Defaults to all.
+You can use the `-l` or `--libraries` followed by a list of libraries to limit your session to a certain number of libraries. Defaults to all. View a list of all supported libraries on [our website](https://fleet.so/context).
 
 ```shell
 context -l langchain pydantic openai
