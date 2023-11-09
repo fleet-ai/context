@@ -89,6 +89,7 @@ def main():
         filters["library_name"] = args.libraries
 
     # If local model requested, use LMStudio
+    api_key = ""
     if args.local:
         openai.api_base = "http://localhost:1234/v1"
         openai.api_key = ""
@@ -136,7 +137,8 @@ def main():
             ---"""
             )
         else:
-            openai.api_key = os.environ.get("OPENAI_API_KEY")
+            api_key = os.environ.get("OPENAI_API_KEY")
+            openai.api_key = api_key
 
     if model == "gpt-4-1106-preview":
         print_markdown(
