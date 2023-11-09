@@ -2,15 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name="fleet-context",
-    version="1.0.12",
+    version="1.0.16",
     description="A chat interface over up-to-date Python library documentation.",
-    long_description=open("README.md").read(),
+    long_description=open("README.md", "r", encoding="utf8").read(),
     long_description_content_type="text/markdown",
     author="Fleet AI",
     author_email="team@usefleet.ai",
     url="https://github.com/fleet-ai/context/tree/main",
     packages=find_packages(),
-    install_requires=["openai", "rich>=13.0.0", "tiktoken>=0.3.3"],
+    install_requires=["openai>=1.1.0", "rich>=13.0.0", "tiktoken>=0.3.3"],
     py_modules=["cli"],
     entry_points={
         "console_scripts": [
