@@ -1,12 +1,12 @@
 # pylint: disable=W0707
 # pylint: disable=W0719
 
-import os
+import json
 import tiktoken
 import openai
 import requests
 
-from constants.ai import SYSTEM_PROMPT, PROMPT, MODELS_TO_TOKENS, API_URL
+from constants.ai import SYSTEM_PROMPT, PROMPT, API_URL
 
 
 def retrieve_context(query, k=10, filters=None):
@@ -35,7 +35,11 @@ def retrieve_context(query, k=10, filters=None):
 
 
 def construct_prompt(
-    messages, context_message, model="gpt-4-1106-preview", cite_sources=True
+    messages,
+    context_message,
+    model="gpt-4-1106-preview",
+    cite_sources=True,
+    context_window=3000,
 ):
     """
     Constructs a RAG (Retrieval-Augmented Generation) prompt by balancing the token count of messages and context_message.
@@ -50,9 +54,13 @@ def construct_prompt(
     Returns:
     List[dict]: The constructed RAG prompt.
     """
+    # Get the encoding; default to cl100k_base
+    if model == "local-model":
+        encoding = tiktoken.get_encoding("cl100k_base")
+    else:
+        encoding = tiktoken.encoding_for_model(model)
 
     # 1) calculate tokens
-    context_window = MODELS_TO_TOKENS[model]
     reserved_space = 1000
     max_messages_count = int((context_window - reserved_space) / 2)
     max_context_count = int((context_window - reserved_space) / 2)
@@ -63,8 +71,6 @@ def construct_prompt(
         messages.insert(-1, {"role": "user", "content": PROMPT})
 
     # 3) find how many tokens each list has
-    encoding = tiktoken.encoding_for_model(model)
-
     messages_token_count = len(
         encoding.encode(
             "\n".join(
@@ -166,3 +172,47 @@ def get_openai_chat_response(messages, model="gpt-4-1106-preview"):
     except Exception as error:
         print("Streaming Error:", error)
         raise Exception("Internal Server Error")
+
+
+def get_local_chat_response(messages):
+    """
+    Returns a streamed chat response from a local server.
+
+    Parameters:
+    messages (List[dict]): List of messages to be included in the prompt.
+    model (str): The model to be used for encoding, default is "gpt-4-1106-preview".
+
+    Returns:
+    str: The streamed chat response.
+    """
+    try:
+        url = "http://localhost:1234/v1/chat/completions"
+        headers = {"Content-Type": "application/json"}
+        data = {
+            "messages": messages,
+            "temperature": 0.2,
+            "max_tokens": -1,
+            "stream": True,
+        }
+        response = requests.post(
+            url, headers=headers, data=json.dumps(data), stream=True, timeout=120
+        )
+
+        if response.status_code == 200:
+            for chunk in response.iter_content(chunk_size=None):
+                decoded_chunk = chunk.decode()
+                if (
+                    "data:" in decoded_chunk and decoded_chunk.split("data:")[1].strip()
+                ):  # Check if the chunk is not empty
+                    try:
+                        chunk_dict = json.loads(decoded_chunk.split("data:")[1].strip())
+                        yield chunk_dict["choices"][0]["delta"].get("content", "")
+                    except json.JSONDecodeError:
+                        pass
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            raise Exception("Internal Server Error")
+
+    except requests.exceptions.RequestException as error:
+        print("Request Error:", error)
+        raise Exception("Invalid request. Please check your request parameters.")

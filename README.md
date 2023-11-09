@@ -43,6 +43,7 @@ context
 ```
 
 If you have an existing package that already uses they keyword `context`, you can also activate Fleet Context by running:
+
 ```shell
 fleet-context
 ```
@@ -65,6 +66,29 @@ You can select a different OpenAI model by using `-m` or `--model`. Defaults to 
 
 ```shell
 context -m gpt-4-1106-preview
+```
+
+<br>
+
+## Using local models
+
+Local model support is powered by [LM Studio](https://lmstudio.ai). To use local models, you can use `--local` or `-n`:
+
+```shell
+context --local
+```
+
+You need to download your local model through LM Studio. To do that:
+
+1. Download LM Studio. You can find the download link here: https://lmstudio.ai
+2. Open LM Studio and download your model of choice.
+3. Click the ↔ icon on the very left sidebar
+4. Select your model and click "Start Server"
+
+The context window is defaulted to 3000. You can change this by using `--context_window` or `-w`:
+
+```shell
+context --local --context_window 4096
 ```
 
 <br>
