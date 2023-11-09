@@ -48,7 +48,23 @@ If you have an existing package that already uses the keyword `context`, you can
 fleet-context
 ```
 
-<br>
+<br><br><br>
+
+## API
+
+You can download any library's embeddings and load it up into a dataframe by running:
+
+```python
+from context import download_embeddings
+
+df = download_embeddings("langchain")
+```
+
+You can see a full list of supported libraries & search through them [on our website](https://fleet.so/context) at the bottom of the page.
+
+<br><br><br>
+
+## CLI Tool
 
 ### Limit libraries
 
