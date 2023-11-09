@@ -7,7 +7,7 @@
     <br>
     <b>A CLI tool over the top 1218 Python libraries.</b>
     <br>
-    <span>Used for library q/a & code generation with all avaliable OpenAI models</span>
+    <span>Used for library q/a & code generation with all available OpenAI models</span>
     <br>
     <br>
     <a href="https://alpha.usefleet.ai/context">Website</a>
