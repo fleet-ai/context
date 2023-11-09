@@ -37,7 +37,7 @@ ARGUMENTS = [
         "nickname": "n",
         "help_text": "Uses LMStudio for local models",
         "type": bool,
-        "default": True,
+        "default": False,
     },
     {
         "name": "context_window",
