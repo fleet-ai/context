@@ -9,7 +9,7 @@ import requests
 from constants.ai import SYSTEM_PROMPT, PROMPT, API_URL
 
 
-def retrieve_context(query, k=10, filters=None):
+def retrieve_context(query, openai_api_key, k=10, filters=None):
     """Gets the context from our libraries vector db for a given query.
 
     Args:
@@ -19,13 +19,14 @@ def retrieve_context(query, k=10, filters=None):
 
     # First, we query the API
     url = f"{API_URL}/query"
+    headers = {"Authorization": f"Bearer {openai_api_key}"}
     params = {
         "query": query,
         "dataset": "python_libraries",
         "n_results": k,
         "filters": filters,
     }
-    responses = requests.post(url, json=params, timeout=120).json()
+    responses = requests.post(url, json=params, headers=headers, timeout=120).json()
 
     # Then, we build the prompt_with_context string
     prompt_with_context = ""
