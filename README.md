@@ -42,7 +42,7 @@ pip install -e .
 context
 ```
 
-If you have an existing package that already uses they keyword `context`, you can also activate Fleet Context by running:
+If you have an existing package that already uses the keyword `context`, you can also activate Fleet Context by running:
 
 ```shell
 fleet-context
