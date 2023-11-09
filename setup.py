@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="fleet-context",
-    version="1.0.15",
+    version="1.0.16",
     description="A chat interface over up-to-date Python library documentation.",
     long_description=open("README.md", "r", encoding="utf8").read(),
     long_description_content_type="text/markdown",

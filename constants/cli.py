@@ -32,6 +32,20 @@ ARGUMENTS = [
         "type": bool,
         "default": True,
     },
+    {
+        "name": "local",
+        "nickname": "n",
+        "help_text": "Uses LMStudio for local models",
+        "type": bool,
+        "default": True,
+    },
+    {
+        "name": "context_window",
+        "nickname": "w",
+        "help_text": "Context window (if using local models)",
+        "type": int,
+        "default": 3000,
+    },
 ]
 
 LIBRARIES = [

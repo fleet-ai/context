@@ -12,9 +12,15 @@ from rich import print as rprint
 
 from utils.utils import print_markdown, print_exception, extract_code_blocks, print_help
 from utils.stream import TextStream
-from utils.ai import retrieve_context, construct_prompt, get_openai_chat_response
+from utils.ai import (
+    retrieve_context,
+    construct_prompt,
+    get_openai_chat_response,
+    get_local_chat_response,
+)
 
 from constants.cli import ARGUMENTS, LIBRARIES
+from constants.ai import MODELS_TO_TOKENS
 
 
 def main():
@@ -82,29 +88,55 @@ def main():
                 return
         filters["library_name"] = args.libraries
 
-    # Get the OpenAI API key, if not found
-    if not os.environ.get("OPENAI_API_KEY"):
+    # If local model requested, use LMStudio
+    if args.local:
+        openai.api_base = "http://localhost:1234/v1"
+        openai.api_key = ""
+        model = "local-model"
+        context_window = args.context_window
         print_markdown(
-            """---
-        !!!**OpenAI API key not found.**
+            f"""---
 
-        Please provide a key to proceed.
-        ---
-        """
-        )
-        api_key = getpass("OpenAI API key: ")
-        openai.api_key = api_key
+        **You are using a local model.**
+        We're working with LM Studio to provide access to local models for you. Download and start your model to get started.
 
-        print_markdown(
-            """
-        ---
+        Instructions:
+        1. Download LM Studio. You can find the download link here: https://lmstudio.ai
+        2. Open LM Studio and download your model of choice.
+        3. Click the **↔ icon** on the very left sidebar
+        4. Select your model and click "Start Server"
 
-        **Tip**: To save this key for later, run `export OPENAI_API_KEY=<your key>` on mac/linux or `setx OPENAI_API_KEY <your key>` on windows.
+        Note that your context window is set to {context_window}. To change this, run `context --context_window <context window>`.
 
         ---"""
         )
+
     else:
-        openai.api_key = os.environ.get("OPENAI_API_KEY")
+        context_window = MODELS_TO_TOKENS[model]
+
+        # Get the OpenAI API key, if not found
+        if not os.environ.get("OPENAI_API_KEY"):
+            print_markdown(
+                """---
+            !!!**OpenAI API key not found.**
+
+            Please provide a key to proceed.
+            ---
+            """
+            )
+            api_key = getpass("OpenAI API key: ")
+            openai.api_key = api_key
+
+            print_markdown(
+                """
+            ---
+
+            **Tip**: To save this key for later, run `export OPENAI_API_KEY=<your key>` on mac/linux or `setx OPENAI_API_KEY <your key>` on windows.
+
+            ---"""
+            )
+        else:
+            openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     if model == "gpt-4-1106-preview":
         print_markdown(
@@ -139,15 +171,25 @@ def main():
             messages.append({"role": "user", "content": query})
             rag_context = retrieve_context(query, k=k, filters=filters)
             prompts = construct_prompt(
-                messages, rag_context, model=model, cite_sources=cite_sources
+                messages,
+                rag_context,
+                model=model,
+                cite_sources=cite_sources,
+                context_window=context_window,
             )
             full_response = ""
             try:
                 streamer = TextStream()
-                for response in get_openai_chat_response(prompts, model=model):
-                    if response:
-                        full_response += response
-                        streamer.print_stream(full_response)
+                if args.local:
+                    for response in get_local_chat_response(prompts):
+                        if response:
+                            full_response += response
+                            streamer.print_stream(full_response)
+                else:
+                    for response in get_openai_chat_response(prompts, model=model):
+                        if response:
+                            full_response += response
+                            streamer.print_stream(full_response)
             finally:
                 streamer.end_stream()
                 rprint("\n")
