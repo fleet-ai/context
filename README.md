@@ -70,7 +70,7 @@ context -m gpt-4-1106-preview
 
 <br>
 
-## Using local models
+### Using local models
 
 Local model support is powered by [LM Studio](https://lmstudio.ai). To use local models, you can use `--local` or `-n`:
 
