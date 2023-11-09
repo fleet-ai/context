@@ -16,10 +16,10 @@ from utils.ai import (
     retrieve_context,
     construct_prompt,
     get_remote_chat_response,
-    get_local_chat_response,
+    get_other_chat_response,
 )
 
-from constants.cli import ARGUMENTS, LIBRARIES
+from constants.cli import ARGUMENTS, LIBRARIES, OPENAI_MODELS
 from constants.ai import MODELS_TO_TOKENS
 
 
@@ -88,12 +88,17 @@ def main():
                 return
         filters["library_name"] = args.libraries
 
+    # Get context window
+    if model in OPENAI_MODELS:
+        context_window = MODELS_TO_TOKENS[model]
+    else:
+        context_window = args.context_window
+
     # If local model requested, use LMStudio
     if args.local:
         openai.api_base = "http://localhost:1234/v1"
         openai.api_key = ""
         model = "local-model"
-        context_window = args.context_window
         print_markdown(
             f"""---
 
@@ -112,14 +117,14 @@ def main():
         )
 
     else:
-        context_window = MODELS_TO_TOKENS[model]
-        api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
+        openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+        openai_key = os.environ.get("OPENAI_API_KEY")
 
         # Get the OpenAI API key, if not found
-        if not api_key:
+        if model in OPENAI_MODELS and not openai_key:
             print_markdown(
                 """---
-            !!!**OpenAI/OpenRouter API key not found.**
+            !!!**OpenAI API key not found.**
 
             Please provide a key to proceed.
             ---
@@ -138,8 +143,34 @@ def main():
 
             ---"""
             )
-        else:
-            openai.api_key = api_key
+
+        # Otherwise, grab the openrouter key, if not found
+        elif model not in OPENAI_MODELS and not openrouter_key:
+            print_markdown(
+                """---
+            !!!**OpenRouter API key not found.**
+
+            Please provide a key to proceed.
+            ---
+            """
+            )
+            api_key = getpass("OpenRouter API key: ")
+            os.environ["OPENROUTER_API_KEY"] = api_key
+
+            print_markdown(
+                f"""
+            ---
+
+            **Tip**: To save this key for later, run `export OPENROUTER_API_KEY=<your key>` on mac/linux or `setx OPENROUTER_API_KEY <your key>` on windows.
+        
+            You can optionally set `OPENROUTER_APP_URL` and `OPENROUTER_APP_TITLE`, too.
+
+            Note that your context window is set to {context_window}. To change this, run `context --context_window <context window>`.
+
+            ---"""
+            )
+        elif model in OPENAI_MODELS:
+            openai.api_key = openai_key
 
     if model == "gpt-4-1106-preview":
         print_markdown(
@@ -183,13 +214,13 @@ def main():
             full_response = ""
             try:
                 streamer = TextStream()
-                if args.local:
-                    for response in get_local_chat_response(prompts):
+                if model in OPENAI_MODELS:
+                    for response in get_remote_chat_response(prompts, model=model):
                         if response:
                             full_response += response
                             streamer.print_stream(full_response)
                 else:
-                    for response in get_remote_chat_response(prompts, model=model):
+                    for response in get_other_chat_response(prompts, model=model):
                         if response:
                             full_response += response
                             streamer.print_stream(full_response)
