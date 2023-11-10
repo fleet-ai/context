@@ -1,12 +1,44 @@
 # pylint: disable=W0707
 # pylint: disable=W0719
 
+import os
 import json
 import tiktoken
 import openai
 import requests
 
 from constants.ai import SYSTEM_PROMPT, PROMPT, API_URL
+
+
+def retrieve(query, openai_api_key=None, k=10, filters=None):
+    """Retrieves and returns dict.
+
+    Args:
+        query (str): User query to pass in
+        openai_api_key (str): openai api key. If not passed in, uses environment variable
+        k (int, optional): number of results passed back. Defaults to 10.
+        filters (dict, optional): Filters to apply to the query. You can filter based off
+            any piece of metadata by passing in a dict of the format {metadata_name: filter_value}
+            ie {"library_id": "1234"}.
+
+            See the README for more details:
+            https://github.com/fleet-ai/context/tree/main#using-fleet-contexts-rich-metadata
+
+    Returns:
+        list: List of queried results
+    """
+    if not openai_api_key:
+        openai_api_key = os.environ.get("OPENAI_API_KEY")
+
+    url = f"{API_URL}/query"
+    headers = {"Authorization": f"Bearer {openai_api_key}"}
+    params = {
+        "query": query,
+        "dataset": "python_libraries",
+        "n_results": k,
+        "filters": filters,
+    }
+    return requests.post(url, json=params, headers=headers, timeout=120).json()
 
 
 def retrieve_context(query, openai_api_key, k=10, filters=None):
@@ -18,15 +50,7 @@ def retrieve_context(query, openai_api_key, k=10, filters=None):
     """
 
     # First, we query the API
-    url = f"{API_URL}/query"
-    headers = {"Authorization": f"Bearer {openai_api_key}"}
-    params = {
-        "query": query,
-        "dataset": "python_libraries",
-        "n_results": k,
-        "filters": filters,
-    }
-    responses = requests.post(url, json=params, headers=headers, timeout=120).json()
+    responses = retrieve(query, openai_api_key=openai_api_key, k=k, filters=filters)
 
     # Then, we build the prompt_with_context string
     prompt_with_context = ""

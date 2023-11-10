@@ -15,6 +15,7 @@ setup(
         "rich>=13.0.0",
         "tiktoken>=0.3.3",
         "tqdm>=4.62.3",
+        "fastparquet>=2023.10.0",
     ],
     py_modules=["cli", "context"],
     entry_points={
