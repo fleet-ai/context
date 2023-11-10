@@ -5,7 +5,7 @@
     <a href="https://discord.gg/YTc98S77aZ"><img src="https://img.shields.io/discord/1107887761412870154?logo=discord&style=flat&logoColor=white" alt="Discord"/></a>
     <br>
     <br>
-    <b>A CLI tool over the top 1218 Python libraries.</b>
+    <b>A CLI tool over the top 1221 Python libraries.</b>
     <br>
     <span>Used for library q/a & code generation with all available OpenAI models</span>
     <br>
