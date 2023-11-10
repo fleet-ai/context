@@ -87,7 +87,7 @@ for result in results:
 [
     {
         'id': '859e8dff-f9ec-497d-aa07-344e48b2f67b',
-        'score': 0.748275101,
+        'score': 0.848275101,
         'values': [],
         'metadata': {
             'library_id': '4506492b-70de-49f1-ba2e-d65bd7048a28',
