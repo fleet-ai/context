@@ -83,6 +83,27 @@ results = query("How do I set up Langchain?")
 for result in results:
     print(f"{result["metadata"]["text"]}\n{result["metadata"]["text"])}")
 ```
+```shell
+[
+    {
+        'id': '859e8dff-f9ec-497d-aa07-344e48b2f67b',
+        'score': 0.748275101,
+        'values': [],
+        'metadata': {
+            'library_id': '4506492b-70de-49f1-ba2e-d65bd7048a28',
+            'page_id': '732e264c-c077-4978-bc93-380d7dc28983',
+            'parent': '3be9bbcc-b5d6-4a91-9f72-a570c2db33e5',
+            'section_id': '',
+            'section_index': 0.0,
+            'text': "Quickstart ## Installation\u200b To install LangChain run: - Pip - Conda pip install langchain conda install langchain -c conda-forge For more details, see our Installation guide. ## Environment setup\u200b Using LangChain will usually require integrations with one or more model providers, data stores, APIs, etc. For this example, we'll use OpenAI's model APIs. First we'll need to install their Python package: pip install openai Accessing the API requires an API key, which you can get by creating an account and heading here.",
+            'title': 'Quickstart | 🦜️🔗 Langchain',
+            'type': '',
+            'url': 'https://python.langchain.com/docs/get_started/quickstart'
+        }
+    },
+    # ...and 9 more
+]
+```
 
 <br>
 
