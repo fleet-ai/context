@@ -1,3 +1,10 @@
+OPENAI_MODELS = [
+    "gpt-4-1106-preview",
+    "gpt-4",
+    "gpt-3.5-turbo",
+    "gpt-3.5-turbo-16k",
+]
+
 ARGUMENTS = [
     {
         "name": "k_value",
@@ -17,13 +24,7 @@ ARGUMENTS = [
         "nickname": "m",
         "help_text": "Specify the model. Default: gpt-4",
         "type": str,
-        "default": "gpt-4",
-        "choices": [
-            "gpt-4-1106-preview",
-            "gpt-4",
-            "gpt-3.5-turbo",
-            "gpt-3.5-turbo-16k",
-        ],
+        "default": "gpt-4"
     },
     {
         "name": "cite_sources",
@@ -37,7 +38,7 @@ ARGUMENTS = [
         "nickname": "n",
         "help_text": "Uses LMStudio for local models",
         "type": bool,
-        "default": True,
+        "default": False,
     },
     {
         "name": "context_window",

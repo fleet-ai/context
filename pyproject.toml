@@ -1,6 +1,6 @@
 [project]
 name = "fleet-context"
-version = "1.0.16"
+version = "1.0.17"
 description = "A chat interface over up-to-date Python library documentation."
 readme = "README.md"
 requires-python = ">=3.9"

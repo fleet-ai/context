@@ -7,6 +7,7 @@ import openai
 import requests
 import os
 
+from constants.cli import OPENAI_MODELS
 from constants.ai import SYSTEM_PROMPT, PROMPT, API_URL
 
 
@@ -56,10 +57,10 @@ def construct_prompt(
     List[dict]: The constructed RAG prompt.
     """
     # Get the encoding; default to cl100k_base
-    if model == "local-model":
-        encoding = tiktoken.get_encoding("cl100k_base")
-    else:
+    if model in OPENAI_MODELS:
         encoding = tiktoken.encoding_for_model(model)
+    else:
+        encoding = tiktoken.get_encoding("cl100k_base")
 
     # 1) calculate tokens
     reserved_space = 1000
@@ -158,7 +159,7 @@ def get_remote_chat_response(messages, model="gpt-4-1106-preview"):
     str: The streamed OpenAI chat response.
     """
     try:
-        response = createCompletion(
+        response = openai.chat.completions.create(
             model=model, messages=messages, temperature=0.2, stream=True
         )
 
@@ -174,29 +175,8 @@ def get_remote_chat_response(messages, model="gpt-4-1106-preview"):
         print("Streaming Error:", error)
         raise Exception("Internal Server Error")
 
-def createCompletion(
-    model,
-    **kwargs
-):
-    if "/" in model:
-        if not os.environ.get('OPENROUTER_API_KEY'):
-            raise Exception(f"For non-OpenAI models, like {model}, set your OPENROUTER_API_KEY.")
-        return openai.ChatCompletion.create(
-            api_base="https://openrouter.ai/api/v1",
-            headers={
-                "HTTP-Referer": os.environ.get('OPENROUTER_APP_URL', "https://fleet.so/context"),
-                "X-Title": os.environ.get('OPENROUTER_APP_TITLE', "Fleet Context")
-            },
-            model=model,
-            **kwargs
-        )
-    else:
-        return openai.Completion.create(
-            model=model,
-            **kwargs
-        )
 
-def get_local_chat_response(messages):
+def get_other_chat_response(messages, model="local-model"):
     """
     Returns a streamed chat response from a local server.
 
@@ -208,32 +188,73 @@ def get_local_chat_response(messages):
     str: The streamed chat response.
     """
     try:
-        url = "http://localhost:1234/v1/chat/completions"
-        headers = {"Content-Type": "application/json"}
-        data = {
-            "messages": messages,
-            "temperature": 0.2,
-            "max_tokens": -1,
-            "stream": True,
-        }
-        response = requests.post(
-            url, headers=headers, data=json.dumps(data), stream=True, timeout=120
-        )
+        if model == "local-model":
+            url = "http://localhost:1234/v1/chat/completions"
+            headers = {"Content-Type": "application/json"}
+            data = {
+                "messages": messages,
+                "temperature": 0.2,
+                "max_tokens": -1,
+                "stream": True,
+            }
+            response = requests.post(
+                url, headers=headers, data=json.dumps(data), stream=True, timeout=120
+            )
 
-        if response.status_code == 200:
-            for chunk in response.iter_content(chunk_size=None):
-                decoded_chunk = chunk.decode()
-                if (
-                    "data:" in decoded_chunk and decoded_chunk.split("data:")[1].strip()
-                ):  # Check if the chunk is not empty
-                    try:
-                        chunk_dict = json.loads(decoded_chunk.split("data:")[1].strip())
-                        yield chunk_dict["choices"][0]["delta"].get("content", "")
-                    except json.JSONDecodeError:
-                        pass
+            if response.status_code == 200:
+                for chunk in response.iter_content(chunk_size=None):
+                    decoded_chunk = chunk.decode()
+                    if (
+                        "data:" in decoded_chunk
+                        and decoded_chunk.split("data:")[1].strip()
+                    ):  # Check if the chunk is not empty
+                        try:
+                            chunk_dict = json.loads(
+                                decoded_chunk.split("data:")[1].strip()
+                            )
+                            yield chunk_dict["choices"][0]["delta"].get("content", "")
+                        except json.JSONDecodeError:
+                            pass
+            else:
+                print(f"Error: {response.status_code}, {response.text}")
+                raise Exception("Internal Server Error")
         else:
-            print(f"Error: {response.status_code}, {response.text}")
-            raise Exception("Internal Server Error")
+            if not os.environ.get("OPENROUTER_API_KEY"):
+                raise Exception(
+                    f"For non-OpenAI models, like {model}, set your OPENROUTER_API_KEY."
+                )
+
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {os.environ.get('OPENROUTER_API_KEY')}",
+                    "HTTP-Referer": os.environ.get(
+                        "OPENROUTER_APP_URL", "https://fleet.so/context"
+                    ),
+                    "X-Title": os.environ.get("OPENROUTER_APP_TITLE", "Fleet Context"),
+                    "Content-Type": "application/json",
+                },
+                data=json.dumps({"model": model, "messages": messages, "stream": True}),
+                stream=True,
+                timeout=120,
+            )
+            if response.status_code == 200:
+                for chunk in response.iter_lines():
+                    decoded_chunk = chunk.decode("utf-8")
+                    if (
+                        "data:" in decoded_chunk
+                        and decoded_chunk.split("data:")[1].strip()
+                    ):  # Check if the chunk is not empty
+                        try:
+                            chunk_dict = json.loads(
+                                decoded_chunk.split("data:")[1].strip()
+                            )
+                            yield chunk_dict["choices"][0]["delta"].get("content", "")
+                        except json.JSONDecodeError:
+                            pass
+            else:
+                print(f"Error: {response.status_code}, {response.text}")
+                raise Exception("Internal Server Error")
 
     except requests.exceptions.RequestException as error:
         print("Request Error:", error)
