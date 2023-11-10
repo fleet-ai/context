@@ -222,6 +222,6 @@ We attribute this to a lack of knowledge for the most up-to-date versions of lib
 
 Check out our visualized data [here](https://atlas.nomic.ai/map/67dc2d8f-5161-46fe-9d73-5fda6f3f5cde/758aa80f-8f11-4f8f-b008-f402e61c48d4?xs=-41.15425&xf=41.09514&ys=-30.76443&yf=32.33730).
 
-You can download all embeddings [here](https://www.dropbox.com/scl/fo/54t2e7fogtixo58pnlyub/h?rlkey=g8e8bdqinznsrn8vo0mxck433&dl=0).
+You can download all embeddings [here](https://drive.google.com/drive/u/0/folders/1Gz6lx8dP9QXObQgbMn2AUvalS8s7ExU4).
 
 <img width="100%" alt="Screenshot 2023-11-06 at 10 01 22 PM" src="https://github.com/fleet-ai/context/assets/44193474/c7aeca8a-5a62-4655-a2c6-4d16846b330d">
