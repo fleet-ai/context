@@ -191,6 +191,23 @@ context -m gpt-4-1106-preview
 
 <br>
 
+### Use non-OpenAI models
+
+You can use Claude, CodeLlama, Mistral, and many other models by
+1. creating an API key on [OpenRouter](https://openrouter.ai) (visit the [Keys](https://openrouter.ai/keys) page after signing up)
+2. setting `OPENROUTER_API_KEY` as an environment variable
+3. specifying your model using the company prefix, e.g.:
+
+```shell
+context -m phind/phind-codellama-34b
+```
+
+OpenAI models work this way as well; just use e.g. `openai/gpt-4-32k`. Other model options are available [here](https://openrouter.ai/models).
+
+Optionally, you can attribute your inference token usage to your app or website by setting `OPENROUTER_APP_URL` and `OPENROUTER_APP_TITLE`. Your app will show on the homepage of https://openrouter.ai if ranked.
+
+<br>
+
 ### Using local models
 
 Local model support is powered by [LM Studio](https://lmstudio.ai). To use local models, you can use `--local` or `-n`:
