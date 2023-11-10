@@ -107,7 +107,7 @@ for result in results:
 
 <br>
 
-You can also set a custom k value and filters by any metadata field we support:
+You can also set a custom k value and filters by any metadata field we support (listed below), plus `library_name`:
 
 ```python
 results = query("How do I set up Langchain?", k=15, filters={"library_name": "langchain"})
