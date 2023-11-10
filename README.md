@@ -74,6 +74,26 @@ You can see a full list of supported libraries & search through them [on our web
 
 <br>
 
+If you'd like to directly query from our hosted vector database, you can run:
+
+```python
+from context import query
+
+results = query("How do I set up Langchain?")
+for result in results:
+    print(f"{result["metadata"]["text"]}\n{result["metadata"]["text"])}")
+```
+
+<br>
+
+You can also set a custom k value and filters by any metadata field we support:
+
+```python
+results = query("How do I set up Langchain?", k=15, filters={"library_name": "langchain"})
+```
+
+<br>
+
 ### How to use the embeddings
 
 You can loop through the embeddings like so:
