@@ -6,6 +6,7 @@ import os
 import openai
 import sys
 import argparse
+import traceback
 from getpass import getpass
 
 from rich import print as rprint
@@ -231,6 +232,10 @@ def main():
                 streamer.end_stream()
                 rprint("\n")
 
+                # Add to messages
+                messages.append({"role": "assistant", "content": full_response})
+
+                # Execute code blocks
                 code_blocks = extract_code_blocks(full_response)
                 if code_blocks:
                     while True:
@@ -241,8 +246,15 @@ def main():
                             try:
                                 exec(code_blocks)
                             except Exception:
-                                exc_type, exc_value, traceback = sys.exc_info()
-                                print_exception(exc_type, exc_value, traceback)
+                                exc_type, exc_value, exc_traceback = sys.exc_info()
+                                print_exception(exc_type, exc_value, exc_traceback)
+
+                                messages.append(
+                                    {
+                                        "role": "user",
+                                        "content": f"An exception occured. {''.join(traceback.format_exception(exc_type, exc_value, exc_traceback))}",
+                                    }
+                                )
                             break
                         else:
                             break

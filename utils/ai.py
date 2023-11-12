@@ -93,9 +93,10 @@ def construct_prompt(
     max_context_count = int((context_window - reserved_space) / 2)
 
     # 2) construct prompt
-    messages.insert(0, {"role": "system", "content": SYSTEM_PROMPT})
+    prompts = messages.copy()
+    prompts.insert(0, {"role": "system", "content": SYSTEM_PROMPT})
     if cite_sources:
-        messages.insert(-1, {"role": "user", "content": PROMPT})
+        prompts.insert(-1, {"role": "user", "content": PROMPT})
 
     # 3) find how many tokens each list has
     messages_token_count = len(
@@ -103,7 +104,7 @@ def construct_prompt(
             "\n".join(
                 [
                     f"<|im_start|>{message['role']}\n{message['content']}<|im_end|>"
-                    for message in messages
+                    for message in prompts
                 ]
             )
         )
@@ -132,15 +133,15 @@ def construct_prompt(
     # Cut down messages
     while messages_token_count > max_messages_count:
         removed_encoding = encoding.encode(
-            f"<|im_start|>{messages[1]['role']}\n{messages[1]['content']}<|im_end|>"
+            f"<|im_start|>{prompts[1]['role']}\n{prompts[1]['content']}<|im_end|>"
         )
         messages_token_count -= len(removed_encoding)
         if messages_token_count < max_messages_count:
-            messages = (
-                [messages[0]]
+            prompts = (
+                [prompts[0]]
                 + [
                     {
-                        "role": messages[1]["role"],
+                        "role": prompts[1]["role"],
                         "content": encoding.decode(
                             removed_encoding[
                                 : min(
@@ -153,10 +154,10 @@ def construct_prompt(
                         .replace("<|im_end|>", ""),
                     }
                 ]
-                + messages[2:]
+                + prompts[2:]
             )
         else:
-            messages = [messages[0]] + messages[2:]
+            prompts = [prompts[0]] + prompts[2:]
 
     # Cut down context
     if context_token_count > max_context_count:
@@ -167,9 +168,10 @@ def construct_prompt(
         context_message["content"] = context_message["content"][:reduced_chars_length]
 
     # 6) Combine both lists
-    messages.insert(-1, context_message)
+    prompts.insert(-1, context_message)
 
-    return messages
+    print(prompts)
+    return prompts
 
 
 def get_remote_chat_response(messages, model="gpt-4-1106-preview"):
