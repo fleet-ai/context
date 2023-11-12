@@ -5,8 +5,8 @@ import os
 import json
 import tiktoken
 import openai
+from openai import OpenAI
 import requests
-import os
 
 from constants.cli import OPENAI_MODELS
 from constants.ai import SYSTEM_PROMPT, PROMPT, API_URL
@@ -170,7 +170,6 @@ def construct_prompt(
     # 6) Combine both lists
     prompts.insert(-1, context_message)
 
-    print(prompts)
     return prompts
 
 
@@ -185,8 +184,10 @@ def get_remote_chat_response(messages, model="gpt-4-1106-preview"):
     Returns:
     str: The streamed OpenAI chat response.
     """
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
     try:
-        response = openai.chat.completions.create(
+        response = client.chat.completions.create(
             model=model, messages=messages, temperature=0.2, stream=True
         )
 

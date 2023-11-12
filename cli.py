@@ -98,8 +98,6 @@ def main():
     # If local model requested, use LMStudio
     api_key = ""
     if args.local:
-        openai.api_base = "http://localhost:1234/v1"
-        openai.api_key = ""
         model = "local-model"
         print_markdown(
             f"""---
@@ -132,8 +130,8 @@ def main():
             ---
             """
             )
-            api_key = getpass("OpenAI API key: ")
-            openai.api_key = api_key
+            openai_key = getpass("OpenAI API key: ")
+            os.environ["OPENAI_API_KEY"] = openai_key
 
             print_markdown(
                 """
@@ -171,8 +169,6 @@ def main():
 
             ---"""
             )
-        elif model in OPENAI_MODELS:
-            openai.api_key = openai_key
 
     if model == "gpt-4-1106-preview":
         print_markdown(
