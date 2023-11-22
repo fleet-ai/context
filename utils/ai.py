@@ -12,7 +12,7 @@ from constants.cli import OPENAI_MODELS
 from constants.ai import SYSTEM_PROMPT, PROMPT, API_URL
 
 
-def retrieve(query, openai_api_key=None, k=10, filters=None):
+def retrieve(query, k=10, filters=None):
     """Retrieves and returns dict.
 
     Args:
@@ -33,14 +33,13 @@ def retrieve(query, openai_api_key=None, k=10, filters=None):
         openai_api_key = os.environ.get("OPENAI_API_KEY")
 
     url = f"{API_URL}/query"
-    headers = {"Authorization": f"Bearer {openai_api_key}"}
     params = {
         "query": query,
         "dataset": "python_libraries",
         "n_results": k,
         "filters": filters,
     }
-    return requests.post(url, json=params, headers=headers, timeout=120).json()
+    return requests.post(url, json=params, timeout=120).json()
 
 
 def retrieve_context(query, openai_api_key, k=10, filters=None):
@@ -52,7 +51,7 @@ def retrieve_context(query, openai_api_key, k=10, filters=None):
     """
 
     # First, we query the API
-    responses = retrieve(query, openai_api_key=openai_api_key, k=k, filters=filters)
+    responses = retrieve(query, k=k, filters=filters)
 
     # Then, we build the prompt_with_context string
     prompt_with_context = ""

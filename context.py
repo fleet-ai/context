@@ -76,7 +76,6 @@ def query(user_query: str, k: int = 10, filters: dict = None) -> list:
 
     return retrieve(
         user_query,
-        openai_api_key=os.environ.get("OPENAI_API_KEY"),
         k=k,
         filters=filters,
     )
