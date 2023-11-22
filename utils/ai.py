@@ -29,8 +29,6 @@ def retrieve(query, k=10, filters=None):
     Returns:
         list: List of queried results
     """
-    if not openai_api_key:
-        openai_api_key = os.environ.get("OPENAI_API_KEY")
 
     url = f"{API_URL}/query"
     params = {
@@ -144,7 +142,8 @@ def construct_prompt(
                         "content": encoding.decode(
                             removed_encoding[
                                 : min(
-                                    int(max_messages_count - messages_token_count),
+                                    int(max_messages_count -
+                                        messages_token_count),
                                     len(removed_encoding),
                                 )
                             ]
@@ -162,7 +161,8 @@ def construct_prompt(
     if context_token_count > max_context_count:
         # Taking a proportion of the content chars length
         reduced_chars_length = int(
-            len(context_message["content"]) * (max_context_count / context_token_count)
+            len(context_message["content"]) *
+            (max_context_count / context_token_count)
         )
         context_message["content"] = context_message["content"][:reduced_chars_length]
 
@@ -196,7 +196,8 @@ def get_remote_chat_response(messages, model="gpt-4-1106-preview"):
 
     except openai.AuthenticationError as error:
         print("401 Authentication Error:", error)
-        raise Exception("Invalid OPENAI_API_KEY. Please re-run with a valid key.")
+        raise Exception(
+            "Invalid OPENAI_API_KEY. Please re-run with a valid key.")
 
     except Exception as error:
         print("Streaming Error:", error)
@@ -261,7 +262,8 @@ def get_other_chat_response(messages, model="local-model"):
                     "X-Title": os.environ.get("OPENROUTER_APP_TITLE", "Fleet Context"),
                     "Content-Type": "application/json",
                 },
-                data=json.dumps({"model": model, "messages": messages, "stream": True}),
+                data=json.dumps(
+                    {"model": model, "messages": messages, "stream": True}),
                 stream=True,
                 timeout=120,
             )
@@ -285,4 +287,5 @@ def get_other_chat_response(messages, model="local-model"):
 
     except requests.exceptions.RequestException as error:
         print("Request Error:", error)
-        raise Exception("Invalid request. Please check your request parameters.")
+        raise Exception(
+            "Invalid request. Please check your request parameters.")
