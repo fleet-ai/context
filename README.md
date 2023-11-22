@@ -85,7 +85,7 @@ from context import query
 
 results = query("How do I set up Langchain?")
 for result in results:
-    print(f"{result["metadata"]["text"]}\n{result["metadata"]["text"])}")
+    print(f"{result['metadata']['text']}\n{result['metadata']['text']}")
 ```
 ```shell
 [
