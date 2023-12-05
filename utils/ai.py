@@ -17,7 +17,6 @@ def retrieve(query, k=10, filters=None):
 
     Args:
         query (str): User query to pass in
-        openai_api_key (str): openai api key. If not passed in, uses environment variable
         k (int, optional): number of results passed back. Defaults to 10.
         filters (dict, optional): Filters to apply to the query. You can filter based off
             any piece of metadata by passing in a dict of the format {metadata_name: filter_value}
@@ -40,7 +39,7 @@ def retrieve(query, k=10, filters=None):
     return requests.post(url, json=params, timeout=120).json()
 
 
-def retrieve_context(query, openai_api_key, k=10, filters=None):
+def retrieve_context(query, k=10, filters=None):
     """Gets the context from our libraries vector db for a given query.
 
     Args:
