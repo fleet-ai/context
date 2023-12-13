@@ -201,9 +201,7 @@ def main():
                 break
 
             messages.append({"role": "user", "content": query})
-            rag_context = retrieve_context(
-                query, openai_api_key=api_key, k=k, filters=filters
-            )
+            rag_context = retrieve_context(query, k=k, filters=filters)
             prompts = construct_prompt(
                 messages,
                 rag_context,
