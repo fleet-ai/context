@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import requests
 from tqdm import tqdm
+from typing import Optional
 
 from utils.ai import retrieve
 
@@ -20,19 +21,30 @@ def _download_file(url, filename):
         print("ERROR, something went wrong")
 
 
-def download_embeddings(library_name: str) -> pd.DataFrame:
+def download_embeddings(library_name: str, cache_dir: Optional[str] = None, delete: bool = True) -> pd.DataFrame:
     """Downloads all embeddings and loads it up into a dataframe.
 
     Args:
         library_name (str): The library name for which to download the embeddings.
             See https://fleet.so/context for a list of all 1200+.
+
+        cache_dir (Optional[str], optional): The directory to cache the embeddings in.
+
+        delete (bool, optional): Whether to delete the file after reading. Defaults to True.
+            `delete` is ignored when `cache_dir` is not None.
     """
     filename = f"libraries_{library_name}.parquet"
     url = f"https://s3.amazonaws.com/library-embeddings/{filename}"
-    _download_file(url, filename)
-    df = pd.read_parquet(filename)
-    os.remove(filename)  # remove the file after reading
-    print(df.head())
+    local_filename = filename if cache_dir is None else os.path.join(cache_dir, filename)
+
+    if not os.path.exists(local_filename):
+        _download_file(url, local_filename)
+
+    df = pd.read_parquet(local_filename)
+
+    if cache_dir is None and delete:
+        os.remove(local_filename)
+
     return df
 
 
