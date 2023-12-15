@@ -26,7 +26,13 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
-  "openai>1.1.0", "rich>=13.0.0", "tiktoken>=0.3.3"
+  "openai>1.1.0",
+  "pandas",
+  "pyarrow",
+  "requests",
+  "rich>=13.0.0",
+  "tiktoken>=0.3.3",
+  "tqdm",
 ]
 [project.urls]
 "Homepage" = "https://fleet.so"
