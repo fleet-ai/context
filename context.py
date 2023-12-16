@@ -42,7 +42,13 @@ def download_embeddings(library_name: str, cache_dir: Optional[str] = None, dele
     """
     filename = f"libraries_{library_name}.parquet"
     url = f"https://s3.amazonaws.com/library-embeddings/{filename}"
-    local_filename = filename if cache_dir is None else os.path.join(cache_dir, filename)
+
+    if cache_dir is None:
+        local_filename = filename
+    else:
+        os.makedirs(cache_dir, exist_ok=True)
+        local_filename = os.path.join(cache_dir, filename)
+
 
     if not os.path.exists(local_filename):
         try:
@@ -51,7 +57,7 @@ def download_embeddings(library_name: str, cache_dir: Optional[str] = None, dele
             if exc.response.status_code in {403, 404}:
                 error_message = (
                     f"library `{library_name}` not found. "
-                    f"See https://fleet.so/context for a list of all 1200+."
+                    "See https://fleet.so/context for a list of all 1200+."
                 )
                 raise ValueError(error_message) from exc
             else:
