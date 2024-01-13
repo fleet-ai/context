@@ -7,11 +7,15 @@ import sys
 import argparse
 import traceback
 from functools import partial
+import sys
+from io import StringIO
+from contextlib import contextmanager
 
 from getpass import getpass
 from rich import print as rprint
 try:
     import panel as pn
+    from panel.io.mime_render import exec_with_return
 except ImportError:
     raise ImportError(
         "Panel is not installed. Please install panel using `pip install panel`."
@@ -20,7 +24,6 @@ except ImportError:
 pn.extension()
 
 from utils.utils import print_markdown, print_exception, extract_code_blocks, print_help
-from utils.stream import TextStream
 from utils.ai import (
     retrieve_context,
     construct_prompt,
@@ -31,10 +34,35 @@ from utils.ai import (
 from constants.cli import ARGUMENTS, LIBRARIES, OPENAI_MODELS
 from constants.ai import MODELS_TO_TOKENS
 
+@contextmanager
+def capture_stdout():
+    original_stdout = sys.stdout
+    sys.stdout = StringIO()
+    try:
+        yield sys.stdout
+    finally:
+        sys.stdout = original_stdout
+
+
+def execute(code_blocks, instance, clicks):
+    try:
+        with capture_stdout() as other_result:
+            result = exec_with_return(code_blocks)
+            if result:
+                instance.send(result, user="Fleet Context", avatar="🛩️", respond=False)
+        if other_result:
+            instance.send(other_result.getvalue(), user="Fleet Context", avatar="🛩️", respond=False)
+    except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        instance.send(
+            f"An exception occured. {''.join(traceback.format_exception(exc_type, exc_value, exc_traceback))}",
+            user="Fleet Context",
+            avatar="🛩️", respond=False
+        )
+
 
 def respond(k, filters, model, cite_sources, context_window, contents, user, instance):
     messages = instance.serialize()
-    messages.append({"role": "user", "content": contents.strip()})
     rag_context = retrieve_context(contents, k=k, filters=filters)
     prompts = construct_prompt(
         messages,
@@ -48,34 +76,25 @@ def respond(k, filters, model, cite_sources, context_window, contents, user, ins
         if model in OPENAI_MODELS:
             for response in get_remote_chat_response(prompts, model=model):
                 if response:
-                    message = instance.stream(response, message=message)
+                    # airplane emoji
+                    message = instance.stream(
+                        response, message=message, user="Fleet Context", avatar="🛩️")
         else:
             for response in get_other_chat_response(prompts, model=model):
                 if response:
-                    message = instance.stream(response, message=message)
+                    message = instance.stream(
+                        response, message=message, user="Fleet Context", avatar="🛩️")
     finally:
-        pass
-        # # Execute code blocks
-        # code_blocks = extract_code_blocks(full_response)
-        # if code_blocks:
-        #     user_response = input("Run code? (y/n): ")
-        #     if user_response not in ["y", "n"]:
-        #         rprint("Invalid response. Please input 'y' or 'n'.")
-        #     elif user_response == "y":
-        #         try:
-        #             exec(code_blocks)
-        #         except Exception:
-        #             exc_type, exc_value, exc_traceback = sys.exc_info()
-        #             print_exception(exc_type, exc_value, exc_traceback)
+        if not message.object:
+            return
 
-        #             messages.append(
-        #                 {
-        #                     "role": "user",
-        #                     "content": f"An exception occured. {''.join(traceback.format_exception(exc_type, exc_value, exc_traceback))}",
-        #                 }
-        #             )
-
-
+        # Execute code blocks
+        code_blocks = extract_code_blocks(message.object)
+        if code_blocks:
+            execute_button = pn.widgets.Button(name="Click to execute code", button_type="primary", width=200)
+            partial_execute = partial(execute, code_blocks, instance)
+            pn.bind(partial_execute, execute_button.param.clicks, watch=True)
+            instance.send(execute_button, user="Fleet Context", avatar="🛩️", respond=False)
 
 def main():
     parser = argparse.ArgumentParser(description="Fleet Data Retriever UI", add_help=False)
@@ -241,8 +260,8 @@ def main():
         )
     partial_respond = partial(respond, k, filters, model, cite_sources, context_window)
 
-    chat_interface = pn.chat.ChatInterface(callback=partial_respond)
-    template = pn.template.FastListTemplate(main=[chat_interface], title="Fleet Context UI")
+    chat_interface = pn.chat.ChatInterface(callback=partial_respond, callback_exception="verbose")
+    template = pn.template.FastListTemplate(main=[chat_interface], title="🛩️ Fleet Context UI")
     template.show()
 
 
