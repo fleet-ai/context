@@ -23,7 +23,7 @@ except ImportError:
 
 pn.extension()
 
-from utils.utils import print_markdown, print_exception, extract_code_blocks, print_help
+from utils.utils import print_markdown, extract_code_blocks, print_help
 from utils.ai import (
     retrieve_context,
     construct_prompt,
@@ -34,24 +34,18 @@ from utils.ai import (
 from constants.cli import ARGUMENTS, LIBRARIES, OPENAI_MODELS
 from constants.ai import MODELS_TO_TOKENS
 
-@contextmanager
-def capture_stdout():
-    original_stdout = sys.stdout
-    sys.stdout = StringIO()
-    try:
-        yield sys.stdout
-    finally:
-        sys.stdout = original_stdout
-
 
 def execute(code_blocks, instance, clicks):
     try:
-        with capture_stdout() as other_result:
-            result = exec_with_return(code_blocks)
-            if result:
-                instance.send(result, user="Fleet Context", avatar="🛩️", respond=False)
-        if other_result:
-            instance.send(other_result.getvalue(), user="Fleet Context", avatar="🛩️", respond=False)
+        stdout = StringIO()
+        stderr = StringIO()
+        result = exec_with_return(code_blocks, stdout=stdout, stderr=stderr)
+        if result:
+            instance.send(result, user="Fleet Context", avatar="🛩️", respond=False)
+        if stdout.getvalue():
+            instance.send(stdout.getvalue(), user="Fleet Context", avatar="🛩️", respond=False)
+        if stderr.getvalue():
+            instance.send(f"```python\n{stderr.getvalue()}\n```", user="Exception", respond=False)
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         instance.send(
@@ -261,7 +255,7 @@ def main():
     partial_respond = partial(respond, k, filters, model, cite_sources, context_window)
 
     chat_interface = pn.chat.ChatInterface(callback=partial_respond, callback_exception="verbose")
-    template = pn.template.FastListTemplate(main=[chat_interface], title="🛩️ Fleet Context UI")
+    template = pn.template.FastListTemplate(main=[chat_interface], title="🛩️ Fleet Context UI", theme_toggle=False)
     template.show()
 
 
