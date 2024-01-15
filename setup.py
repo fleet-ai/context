@@ -21,9 +21,9 @@ setup(
     entry_points={
         "console_scripts": [
             "context = cli:main",
-            "context_ui = ui:main",
+            "context-ui = ui:main",
             "fleet-context = cli:main",
-            "fleet_context-ui = ui:main",
+            "fleet-context-ui = ui:main",
         ],
     },
     classifiers=[
