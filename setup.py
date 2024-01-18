@@ -17,11 +17,13 @@ setup(
         "tqdm>=4.62.3",
         "fastparquet>=2023.10.0",
     ],
-    py_modules=["cli", "context"],
+    py_modules=["cli", "context", "ui"],
     entry_points={
         "console_scripts": [
             "context = cli:main",
+            "context-ui = ui:main",
             "fleet-context = cli:main",
+            "fleet-context-ui = ui:main",
         ],
     },
     classifiers=[
